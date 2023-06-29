@@ -30,7 +30,7 @@ vector<int> array_intersection (int n1, int n2, int n3, vector<int> arr1, vector
 =========================================================================================================================================================================================================
 
 // 💡 Question 2
-// Given two 0-indexed integer arrays nums1 and nums2, return *a list* answer *of size* 2 *where:*
+// Given two 0-indexed integer arrays nums1 and nums2, return a list* answer *of size* 2 *where:*
 // - answer[0] is a list of all distinct integers in nums1 which are not present in nums2.
 // - answer[1] is a list of all distinct integers in nums2 which are not present in nums1.
 
