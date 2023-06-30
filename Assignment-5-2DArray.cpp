@@ -154,7 +154,24 @@ public:
 // |8-1|=7 > d=2
 // **|8-8|=0 <= d=2**
 
+class Solution {
+public:
+    int findTheDistanceValue(vector<int>& arr1, vector<int>& arr2, int d) {
+        sort(arr2.begin(), arr2.end());
+        int count=0,low,high;
+        
+        for(auto x:arr1){
+            low= x-d, high= x+d;
 
+            auto l= lower_bound(arr2.begin(), arr2.end(),low);
+            auto h= lower_bound(arr2.begin(), arr2.end(),high);
+
+            if(l==h && (*l != low && *l != high)) count++;
+        }
+        
+        return count;
+    }
+};
 =========================================================================================================================================================================================================
 
 💡 **Question 6**
@@ -179,5 +196,107 @@ public:
             }
         }
         return ans;
+    }
+};
+
+=========================================================================================================================================================================================================
+
+
+// 💡 **Question 7**
+
+// Suppose an array of length n sorted in ascending order is **rotated** between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:
+// - [4,5,6,7,0,1,2] if it was rotated 4 times.
+// - [0,1,2,4,5,6,7] if it was rotated 7 times.
+// Notice that **rotating** an array [a[0], a[1], a[2], ..., a[n-1]] 1 time results in the array [a[n-1], a[0], a[1], a[2], ..., a[n-2]].
+// Given the sorted rotated array nums of **unique** elements, return *the minimum element of this array*.
+// You must write an algorithm that runs in O(log n) time.
+
+// **Example 1:**
+// **Input:** nums = [3,4,5,1,2]
+// **Output:** 1
+
+// **Explanation:**
+// The original array was [1,2,3,4,5] rotated 3 times.
+
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int l1=-1,r1=nums.size()-1,l2=-1,r2=nums.size();
+        while(r1-l1>2 && r2-l2>2)
+        {
+            if(r1-l1>2){
+            int m1=l1+(r1-l1)/3;
+            int m2=r1-(r1-l1)/3;
+            if(nums[m1]<nums[m2])
+            {
+                l1=m1;
+            }
+            else{
+                r1=m2;
+            }
+            }
+            if(r2-l2>2){
+            int m1=l2+(r2-l2)/3;
+            int m2=r2-(r2-l2)/3;
+            if(nums[m1]>nums[m2])
+            {
+                l2=m1;
+            }
+            else{
+                r2=m2;
+            }
+            }
+        }
+        return min(nums[r1],nums[l2+1]);
+    }
+};
+
+========================================================================================================================================================================================================
+
+    
+// 💡 **Question 8**
+
+// An integer array original is transformed into a **doubled** array changed by appending **twice the value** of every element in original, and then randomly **shuffling** the resulting array.
+// Given an array changed, return original *if* changed *is a **doubled** array. If* changed *is not a **doubled** array, return an empty array. The elements in* original *may be returned in **any** order*.
+
+// **Example 1:**
+// **Input:** changed = [1,3,4,2,6,8]
+// **Output:** [1,3,4]
+
+// **Explanation:** One possible original array could be [1,3,4]:
+// - Twice the value of 1 is 1 * 2 = 2.
+// - Twice the value of 3 is 3 * 2 = 6.
+// - Twice the value of 4 is 4 * 2 = 8.
+// Other original arrays could be [4,3,1] or [3,1,4].
+
+class Solution {
+public:
+    int next(int l,vector<int> &changed){
+        while(l<changed.size() && changed[l]==-1){
+            l++;
+        }
+        return l;
+    }
+    vector<int> findOriginalArray(vector<int>& changed) {
+        sort(changed.begin(),changed.end());
+        int l=0,h=1,n=changed.size(),count=0;
+        if(n%2) return {};
+        vector<int> ans;
+        while(h<n){
+            if((long long)changed[l]*2==changed[h]){
+                count++;
+                ans.push_back(changed[l]);
+                changed[l]=-1;
+                changed[h]=-1;
+                l=next(l,changed);
+                h++;
+                if(l==h) h++;
+            }else{
+                h++;
+            }
+        }
+        if(count!=n/2) ans={};
+        return ans;
+
     }
 };
